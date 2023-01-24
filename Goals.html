@@ -1,0 +1,219 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Goals</title>
+		<link rel="icon" href="images/logo2.png" type="image/png">
+		<style>
+			img {
+  border-radius: 50%;
+}
+		</style>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="style.css">
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<style>
+			.slidecontainer {
+			
+			  width: 100%;
+			}
+			
+			.slider {
+			  -webkit-appearance: none;
+			  width: 100%;
+			  height: 5px;
+			  background: #d3d3d3;
+			  outline: rounded;
+			  opacity: 0.7;
+			  -webkit-transition: .2s;
+			  transition: opacity .2s;
+			}
+			
+			.slider:hover {
+			  opacity: 1;
+			}
+			
+			.slider::-webkit-slider-thumb {
+			  -webkit-appearance: circle;
+			  appearance: circle;
+			  width: 25px;
+			  height: 25px;
+			  background: purple;
+			  cursor: pointer;
+			}
+			
+			.slider::-moz-range-thumb {
+			  width: 25px;
+			  height: 25px;
+			  cursor: pointer;
+			}
+			</style>
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<a href="index.html" class="title">CashFlow</a>
+				<nav>
+					<ul>
+						<li><a href="index.html">Log Out</a></li>
+						<li><a href="#" class="active">350 points</a></li>
+						<!--<li><a href="#" class="active">Markus</a></li>-->
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<h1 class="major"><img src="images/3.png" alt="" height = 200 /><br>
+								Set a Goal!</h1>
+							<!--<span class="image fit"><img src="images/pic04.jpg" alt="" /></span>-->
+							<p>CashFlow enhances your saving techniques by
+								introducing Goals feature.
+								Goals allows you to set a goal to purchase anything
+								within a due period of time.<br> It allows you to track your
+								savings progress in a hassle free manner and rewards
+								you with reward coins once when you accomplish the
+								goal.</p>
+							<!-- Table -->
+							<section>
+								<h2>My current goals</h2>
+								Here's your current goal list!
+								<br><br>
+								<!-- <div class="skill-box">
+									<span class="title"><h2>Shoes</h2></span>
+						                <div class="skill-bar">
+										<span class="skill-per html">
+											<range-slider min = "100" max = "500"><span class="tooltip">90%</span></range-slider>
+										</span>
+									</div>
+								</div><br>
+						
+								<div class="skill-box">
+									<span class="title"><h2>Car</h2></span>
+						
+									<div class="skill-bar">
+										<span class="skill-per css">
+											<span class="tooltip">70%</span>
+										</span>
+									</div>
+								</div><br>
+								<div class="skill-box">
+									<span class="title"><h2>Cycle</h2></span>
+						
+									<div class="skill-bar">
+										<span class="skill-per javascript">
+											<span class="tooltip">50%</span>
+										</span>
+									</div>
+								</div><br> -->
+								<div class="skill-box">
+									<span class="title"><h2>Shoes</h2></span>
+						            <div class="slidecontainer">
+										<input type="range" min="0" max="100" value="50" class="slider" id="myRange">
+										<p>Progress: <span id="demo"></span>%</p>
+									</div>
+								</div>
+								<div class="skill-box">
+									<span class="title"><h2>House</h2></span>
+						            <div class="slidecontainer">
+										<input type="range" min="0" max="100" value="50" class="slider" id="myRange2">
+										<p>Progress: <span id="demo2"></span>%</p>
+									</div>
+								</div>
+								<div class="skill-box">
+									<span class="title"><h2>Car</h2></span>
+						            <div class="slidecontainer">
+										<input type="range" min="0" max="100" value="50" class="slider" id="myRange3">
+										<p>Progress: <span id="demo3"></span>%</p>
+									</div>
+								</div>
+								<div class="skill-box">
+									<span class="title"><h2>Cycle</h2></span>
+						            <div class="slidecontainer">
+										<input type="range" min="0" max="100" value="50" class="slider" id="myRange4">
+										<p>Progress: <span id="demo4"></span>%</p>
+									</div>
+								</div>
+									<!-- <div class="skill-bar">
+										<div class="slidecontainer">
+											<input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+											<p>Value: <span id="demo"></span></p>
+										  </div>
+										 <span class="skill-per nodejs">
+											<span class="tooltip">30%</span>
+										</span> -->
+								
+						</div>
+						
+					</section>
+					
+
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; Untitled. All rights reserved.</li><li>Design: CashFlow</li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script>
+				var slider = document.getElementById("myRange");
+				var output = document.getElementById("demo");
+				output.innerHTML = slider.value;
+				
+				slider.oninput = function() {
+				  output.innerHTML = this.value;
+				}
+				</script>
+			<script>
+				var slider1 = document.getElementById("myRange2");
+				var output1 = document.getElementById("demo2");
+				output1.innerHTML = slider1.value;
+				
+				slider1.oninput = function() {
+				  output1.innerHTML = this.value;
+				}
+			</script>	
+			<script>
+				var slider2 = document.getElementById("myRange3");
+				var output2 = document.getElementById("demo3");
+				output2.innerHTML = slider2.value;
+				
+				slider2.oninput = function() {
+				  output2.innerHTML = this.value;
+				}
+			</script>	
+			<script>
+				var slider3 = document.getElementById("myRange4");
+				var output3 = document.getElementById("demo4");
+				output3.innerHTML = slider3.value;
+				
+				slider3.oninput = function() {
+				  output3.innerHTML = this.value;
+				}
+			</script>	
+
+	</body>
+</html>

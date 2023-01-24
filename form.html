@@ -1,0 +1,166 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+	<title>Continue your login</title>
+	<link rel="icon" href="images/logo2.png" type="image/png">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+
+	<script>
+		var number;
+		var val;
+
+		function ch() {
+			number = document.getElementById("demo-number").value;
+			val = number.toString() + "@dashboard-aa-uat";
+			console.log(val);
+			callinggg(val);
+		}
+		function callinggg(num) {
+			const api_url = "https://hackathon.pirimidtech.com/hackathon/init/redirection";
+
+			var fetchres;
+			var myHeaders = new Headers();
+			myHeaders.append("API_KEY", "3568b51194b53480dcfb78c350");
+			myHeaders.append("Content-Type", "application/json");
+
+			var raw = JSON.stringify({
+				"vuaId": num.toString(),
+				"templateName": "ONETIME",
+				"trackingId": "1234",
+				"redirectionUrl": "https://gaurpeeyush.github.io/CashFlow/Home.html",
+				"fipIds": []
+			});
+
+			var requestOptions = {
+				method: 'POST',
+				headers: myHeaders,
+				body: raw,
+				redirect: 'follow'
+			};
+			fetch("https://hackathon.pirimidtech.com/hackathon/init/redirection", requestOptions)
+				.then(response => response.json())
+				.then((result) => printIt(result))
+
+				// .then(sessionStorage.setItem("trackingID",result.trackingId))
+				// .then(sessionStorage.setItem("referenceID",result.referenceId))
+
+				.catch(error => console.log('error', error));
+			let printIt = (data) => {
+
+				const a = data;
+				document.getElementById("head123").href = a.redirectionUrl;
+				var track = "", refid = "";
+				tra = a.trackingId;
+				refid = a.referenceId;
+				console.log("first" + tra + "" + refid);
+				localStorage.setItem("trackid", tra);
+				localStorage.setItem("reference", refid);
+				console.log("first" + tra + "" + refid);
+				// sesh(tra, refid);
+				let redirect_Page = () => {
+					let tID = setTimeout(function () {
+						// window.location.href = "C:\Users\Pooja\Documents\GitHub\CashFlow\Home.html";
+						window.location.href="https://gaurpeeyush.github.io/CashFlow/Home.html";
+						// window.location.href = "C:\Users\Pooja\Documents\GitHub\CashFlow\Transaction.html";
+						window.clearTimeout(tID);		// clear time out.
+					}, 3000);
+				}
+				
+
+				
+
+
+
+				// console.log(fetchres=result.redirectionUrl)
+				// comsole.log(result.redirectionUrl);
+			}
+		}
+		
+
+	</script>
+
+	<noscript>
+		<link rel="stylesheet" href="assets/css/noscript.css" />
+	</noscript>
+</head>
+
+<body class="is-preload">
+
+	<!-- Header -->
+	<header id="header">
+		<a href="index.html" class="title">CashFlow</a>
+		<nav>
+			<ul>
+				<li><a href="index.html">Log Out</a></li>
+				<li><a href="#" class="active">350 Points</a></li>
+				<!--<li><a href="#" class="active">Markus</a></li>-->
+			</ul>
+		</nav>
+	</header>
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Main -->
+		<section id="main" class="wrapper">
+			<div class="inner">
+				<h1 class="major">Welcome to CashFlow!</h1>
+				Hello Markus, Welcome Onboard!<br>
+				Allow CashFlow to access your financial data by providing consent after redirection<br>
+				Your Data safety is our #1 priority!
+				<br><br><br>
+				<section>
+					<h2>Continue with your phone number and Email</h2>
+					<form method="post" action="#">
+						<div class="row gtr-uniform">
+							<div class="col-6 col-12-xsmall">
+								<input type="text" name="demo-number" id="demo-number" value=""
+									placeholder="Enter mock phone number" onchange=ch(); />
+							</div>
+							<div class="col-6 col-12-xsmall">
+								<input type="email" name="demo-email" id="demo-email" value="" placeholder="Email" />
+							</div>
+
+							<div class="col-12">
+								<ul class="actions">
+									<!-- <li><a id="head123" >Provide Consent</a></li> -->
+									<!-- <li><input type="submit" value="Provide Consent"  class="primary" onclick="call()" /></li> -->
+									<!-- <li><input type="reset" value="Reset" /></li> -->
+								</ul>
+								<pre><p><a id="head123" class="button" >Provide Consent</a>    <input type="reset" value="Reset" /></p></pre>
+							</div>
+						</div>
+					</form>
+				</section>
+
+
+				<footer id="footer" class="wrapper alt">
+					<div class="inner">
+						<ul class="menu">
+							<li>&copy; Untitled. All rights reserved.</li>
+							<li>Design: CashFlow</li>
+						</ul>
+					</div>
+				</footer>
+
+				<!-- Scripts -->
+				<script src="assets/js/jquery.min.js"></script>
+				<script src="assets/js/jquery.scrollex.min.js"></script>
+				<script src="assets/js/jquery.scrolly.min.js"></script>
+				<script src="assets/js/browser.min.js"></script>
+				<script src="assets/js/breakpoints.min.js"></script>
+				<script src="assets/js/util.js"></script>
+				<script src="assets/js/main.js"></script>
+
+
+</body>
+
+</html>

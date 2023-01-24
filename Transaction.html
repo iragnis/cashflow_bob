@@ -1,0 +1,916 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+	<title>Transaction history</title>
+	<link rel="icon" href="images/logo2.png" type="image/png">
+	<style>
+		img {
+			border-radius: 50%;
+		}
+
+		#dvTable {
+			padding-left: 110px;
+			width: 57%;
+		}
+	</style>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript>
+		<link rel="stylesheet" href="assets/css/noscript.css" />
+	</noscript>
+
+	<script>
+
+		// var trackid = 1234;
+		// var reference = "7766df3f-9393-4be8-8c12-51cdcf3c2619";
+		// var sessionid = "8966a18a-c009-4a0f-9399-0fbf1502d6d1";
+		const t = localStorage.getItem("trackid");
+		const r = localStorage.getItem("reference");
+		const ty = localStorage.getItem("ty");
+		console.log(ty);
+		console.log(t + "" + r);
+		sesh(t, r);
+		// dataf(t, r, sessionid);
+		function sesh(t, r) {
+			var tra = t;
+			var refid = r;
+			console.log("track" + tra);
+			console.log("ref" + r);
+			var myHeaders = new Headers();
+			myHeaders.append("Content-Type", "application/json");
+			myHeaders.append("API_KEY", "3568b51194b53480dcfb78c350");
+
+			var raw = "";
+
+			var requestOptions = {
+				method: 'GET',
+				headers: myHeaders,
+				// body: raw,
+				redirect: 'follow'
+			};
+
+			var apiurl = "https://hackathon.pirimidtech.com/hackathon/consent/status?trackingId=" + tra.toString() + "&referenceId=" + refid.toString();
+			console.log(apiurl);
+			fetch(apiurl, requestOptions)
+				.then(response => response.json())
+				.then(result => printIt(result))
+				.catch(error => console.log('error', error));
+			let printIt = (data) => {
+
+				const a = data;
+
+				var seshid = a.dataDetails[0].sessionId;
+				console.log("sesh" + seshid);
+				localStorage.setItem("trackid", tra);
+				localStorage.setItem("reference", refid);
+				localStorage.setItem("seshid", seshid);
+				let redirect_Page = () => {
+					let tID = setTimeout(function () {
+						// window.location.href = "C:\Users\Pooja\Documents\GitHub\CashFlow\accounts.html";
+						window.location.href="https://gaurpeeyush.github.io/CashFlow/accounts.html";
+						window.clearTimeout(tID);		// clear time out.
+					}, 10000);
+				}
+
+				dataf(t, r, seshid);
+
+			}
+		}
+
+
+		function dataf(trackid, reference, sessionid) {
+
+			var apiurl1 = "https://hackathon.pirimidtech.com/hackathon/consent/data/fetch?trackingId=" + trackid.toString() + "&referenceId=" + reference.toString() + "&sessionId=" + sessionid.toString();
+			//Build an array containing Customer records.
+			var myHeaders = new Headers();
+			myHeaders.append("Content-Type", "application/json");
+			myHeaders.append("API_KEY", "3568b51194b53480dcfb78c350");
+
+			var raw = "";
+
+			var requestOptions = {
+				method: 'GET',
+				headers: myHeaders,
+
+				redirect: 'follow'
+			};
+
+			fetch(apiurl1, requestOptions)
+				.then(response => response.json())
+				.then(result => printIt(result))
+				.catch(error => console.log('error', error));
+			let printIt = (data) => {
+
+
+
+				const a = data;
+				var str = "", amt = "", bal = "", date = "";
+				console.log(a);
+				// console.log("type " + a[0].Profile.Holders.type);
+				// console.log("type " + a[0].type);
+				// console.log("acc no " + a[0].maskedAccNumber);
+				// console.log("acc name " + a[0].Profile.Holders.Holder[0].name);
+				// console.log("sum " + a[0].Summary.currentBalance);
+				// console.log("ifsccode " + a[0].Summary.ifscCode);
+				//console.log(a[0]);
+				var name;
+				try {
+					name = a[0].Profile.Holders.Holder[0].name;
+				} catch (e) {
+					name = a[0].Account.Profile.Holders.Holder.name;
+				}
+
+				console.log(name);
+				// console.log("sum "+a[0].Transactions.Transaction[0].type);
+				var t;
+				for (var i = 0; i < a.length; i++) {
+					try {
+						t = a[i].Account.type;
+
+					}
+					catch (e) {
+						t = a[i].type;
+
+					}
+					t = "\"" + t + "\"";
+					var ind;
+					console.log((t));
+					if (ty == t) {
+						//console.log("x"+i);
+						ind = i;
+						console.log(ty + "" + t);
+						//console.log("\"deposit\"");
+						if (ty === "\"deposit\"") {
+							console.log("in");
+							try {
+								for (i in a[ind].Transactions.Transaction) {
+									const row = document.createElement("tr");
+									str += a[ind].Transactions.Transaction[i].type + " ";
+									amt += a[ind].Transactions.Transaction[i].amount + " ";
+									bal += a[ind].Transactions.Transaction[i].currentBalance + " ";
+									date += a[ind].Transactions.Transaction[i].valueDate + " ";
+
+
+								}
+							} catch (e) {
+								for (i in a[ind].Account.Transactions.Transaction) {
+									const row = document.createElement("tr");
+									str += a[ind].Account.type + " ";
+									amt += a[ind].Account.Transactions.Transaction[i].amount + " ";
+									bal += a[ind].Account.Transactions.Transaction[i].currentBalance + " ";
+									date += a[ind].Account.Transactions.Transaction[i].valueDate + " ";
+
+
+								}
+
+							}
+
+							//console.log("sum "+a[0].Account.type);
+
+
+
+							// appends <table> into <body>
+
+							// console.log(str);
+							// console.log(amt);
+							// console.log(bal);
+							// console.log(date);
+
+
+
+							document.getElementById("name1").innerHTML = name;
+							document.getElementById("acc").innerHTML = a[ind].maskedAccNumber;
+							document.getElementById("type").innerHTML = "ACCOUNT TYPE:" + str.split(" ")[ind];
+							document.getElementById("bal").innerHTML = "ACCOUNT BALANCE:" + a[ind].Summary.currentBalance;
+
+
+							var customers = new Array();
+							customers.push(["DATE", "TYPE", "AMOUNT", "BALANCE"]);
+
+
+							//Create a HTML Table element.
+							var table = document.createElement("TABLE");
+							table.border = "1";
+
+							//Get the count of columns.
+							var columnCount = 4;
+
+
+							//Add the header row.
+							var row = table.insertRow(-1);
+							for (var i = 0; i < columnCount; i++) {
+								var headerCell = document.createElement("TH");
+								headerCell.innerHTML = customers[0][i];
+								row.appendChild(headerCell);
+							}
+							for (i in a[ind].Transactions.Transaction) {
+								const row = document.createElement("tr");
+								customers.push(a[ind].Transactions.Transaction[i].valueDate + "," + a[ind].Transactions.Transaction[i].type + "," + a[ind].Transactions.Transaction[i].amount + "," + a[ind].Transactions.Transaction[i].currentBalance);
+
+
+							}
+
+
+
+
+
+							for (var i = 1; i < 11; i++) {
+								row = table.insertRow(-1);
+								for (var j = 0; j < columnCount; j++) {
+									var cell = row.insertCell(-1);
+									var c = customers[i].split(",");
+									console.log(c[0]);
+									cell.innerHTML = c[j];
+								}
+							}
+
+
+							var dvTable = document.getElementById("dvTable");
+							dvTable.innerHTML = "";
+							dvTable.appendChild(table);
+						}
+
+					}
+
+					if (ty === "\"ppf\"" && t === "\"ppf\"") {
+						// console.log("inside"+" "+ty+""+ t);
+						// console.log("inside ppf"+ind);
+						ind = i;
+						//console.log(ind);
+						try {
+							for (i in a[ind].Transactions.Transaction) {
+								const row = document.createElement("tr");
+								str += a[ind].Transactions.Transaction[i].type + " ";
+								amt += a[ind].Transactions.Transaction[i].amount + " ";
+								bal += a[ind].Transactions.Transaction[i].balance + " ";
+								date += a[ind].Transactions.Transaction[i].valueDate + " ";
+
+
+							}
+						} catch (e) {
+							for (i in a[ind].Account.Transactions.Transaction) {
+								const row = document.createElement("tr");
+								str += a[ind].Account.type + " ";
+								amt += a[ind].Account.Transactions.Transaction[i].amount + " ";
+								bal += a[ind].Account.Transactions.Transaction[i].balance + " ";
+								date += a[ind].Account.Transactions.Transaction[i].valueDate + " ";
+
+
+							}
+
+						}
+
+						//console.log("sum "+a[0].Account.type);
+
+
+
+						// appends <table> into <body>
+
+						// console.log(str);
+						// console.log(amt);
+						// console.log(bal);
+						// console.log(date);
+
+
+
+						document.getElementById("name1").innerHTML = name;
+						document.getElementById("acc").innerHTML = a[ind].maskedAccNumber;
+						document.getElementById("type").innerHTML = "MATURITY DATE:" + a[ind].Account.Summary.maturityDate;
+						document.getElementById("bal").innerHTML = "STATUS:" + a[ind].Account.Summary.status;
+
+
+						var customers = new Array();
+						customers.push(["DATE", "TYPE", "AMOUNT", "BALANCE"]);
+
+
+						//Create a HTML Table element.
+						var table = document.createElement("TABLE");
+						table.border = "1";
+
+						//Get the count of columns.
+						var columnCount = 4;
+
+
+						//Add the header row.
+						var row = table.insertRow(-1);
+						for (var i = 0; i < columnCount; i++) {
+							var headerCell = document.createElement("TH");
+							headerCell.innerHTML = customers[0][i];
+							row.appendChild(headerCell);
+						}
+						for (i in a[ind].Account.Transactions.Transaction) {
+							const row = document.createElement("tr");
+							customers.push(a[ind].Account.Transactions.Transaction[i].valueDate + "," + a[ind].Account.Transactions.Transaction[i].type + "," + a[ind].Account.Transactions.Transaction[i].amount + "," + a[ind].Account.Transactions.Transaction[i].balance);
+
+
+						}
+
+						for (var i = 1; i < 11; i++) {
+							row = table.insertRow(-1);
+							for (var j = 0; j < columnCount; j++) {
+								var cell = row.insertCell(-1);
+								var c = customers[i].split(",");
+								console.log(c[0]);
+								cell.innerHTML = c[j];
+							}
+						}
+
+
+						var dvTable = document.getElementById("dvTable");
+						dvTable.innerHTML = "";
+						dvTable.appendChild(table);
+					}
+					if (ty === "\"equities\"" && t === "\"equities\"") {
+						ind = i;
+						var cmp, rate;
+						//console.log(ind);
+						try {
+							for (i in a[ind].Transactions.Transaction) {
+								const row = document.createElement("tr");
+								str += a[ind].Transactions.Transaction[i].tradeValue + " ";
+								amt += a[ind].Transactions.Transaction[i].companyName + " ";
+								bal += a[ind].Transactions.Transaction[i].symbol + " ";
+								date += a[ind].Transactions.Transaction[i].units + " ";
+								cmp += a[ind].Transactions.Transaction[i].totalCharge + " ";
+								rate += a[ind].Transactions.Transaction[i].rate + " ";
+
+							}
+						} catch (e) {
+							for (i in a[ind].Account.Transactions.Transaction) {
+								const row = document.createElement("tr");
+								str += a[ind].Account.Transactions.Transaction[i].tradeValue + " ";
+								amt += a[ind].Account.Transactions.Transaction[i].companyName + " ";
+								bal += a[ind].Account.Transactions.Transaction[i].symbol + " ";
+								date += a[ind].Account.Transactions.Transaction[i].units + " ";
+								cmp += a[ind].Account.Transactions.Transaction[i].totalCharge + " ";
+								rate += a[ind].Account.Transactions.Transaction[i].rate + " ";
+
+							}
+
+						}
+
+						//console.log("sum "+a[0].Account.type);
+
+
+
+						// appends <table> into <body>
+
+						// console.log(str);
+						// console.log(amt);
+						// console.log(bal);
+						// console.log(date);
+
+
+
+						document.getElementById("name1").innerHTML = name;
+						document.getElementById("acc").innerHTML = a[ind].maskedAccNumber;
+						document.getElementById("type").innerHTML = "CURRENT VALUE:" + a[ind].Account.Summary.currentValue;
+						document.getElementById("bal").innerHTML = "INVESTMENT VALUE:" + a[ind].Account.Summary.investmentValue;
+
+
+						var customers = new Array();
+						customers.push(["COMPANY NAME", "SYMBOL", "RATE", "UNITS", "TRADE VALUE", "TOTAL CHARGE"]);
+
+
+						//Create a HTML Table element.
+						var table = document.createElement("TABLE");
+						table.border = "1";
+
+						//Get the count of columns.
+						var columnCount = 6;
+
+
+						//Add the header row.
+						var row = table.insertRow(-1);
+						for (var i = 0; i < columnCount; i++) {
+							var headerCell = document.createElement("TH");
+							headerCell.innerHTML = customers[0][i];
+							row.appendChild(headerCell);
+						}
+						for (i in a[ind].Account.Transactions.Transaction) {
+							const row = document.createElement("tr");
+							customers.push(a[ind].Account.Transactions.Transaction[i].companyName + "," + a[ind].Account.Transactions.Transaction[i].symbol + "," + a[ind].Account.Transactions.Transaction[i].rate + "," + a[ind].Account.Transactions.Transaction[i].units + "," + a[ind].Account.Transactions.Transaction[i].tradeValue + "," + a[ind].Account.Transactions.Transaction[i].totalCharge);
+
+
+						}
+
+						for (var i = 1; i < a[ind].Account.Transactions.Transaction.length; i++) {
+							row = table.insertRow(-1);
+							for (var j = 0; j < columnCount; j++) {
+								var cell = row.insertCell(-1);
+								var c = customers[i].split(",");
+								console.log(c[0]);
+								cell.innerHTML = c[j];
+							}
+						}
+
+
+						var dvTable = document.getElementById("dvTable");
+						dvTable.innerHTML = "";
+						dvTable.appendChild(table);
+					}
+					if (ty === "\"mutualfunds\"" && t === "\"mutualfunds\"") {
+						ind = i;
+						var cmp, rate;
+						//console.log(ind);
+						try {
+							for (i in a[ind].Transactions.Transaction) {
+								const row = document.createElement("tr");
+								str += a[ind].Transactions.Transaction[i].tradeValue + " ";
+								amt += a[ind].Transactions.Transaction[i].companyName + " ";
+								bal += a[ind].Transactions.Transaction[i].symbol + " ";
+								date += a[ind].Transactions.Transaction[i].units + " ";
+								cmp += a[ind].Transactions.Transaction[i].totalCharge + " ";
+								rate += a[ind].Transactions.Transaction[i].rate + " ";
+
+							}
+						} catch (e) {
+							for (i in a[ind].Account.Transactions.Transaction) {
+								const row = document.createElement("tr");
+								str += a[ind].Account.Transactions.Transaction[i].tradeValue + " ";
+								amt += a[ind].Account.Transactions.Transaction[i].companyName + " ";
+								bal += a[ind].Account.Transactions.Transaction[i].symbol + " ";
+								date += a[ind].Account.Transactions.Transaction[i].units + " ";
+								cmp += a[ind].Account.Transactions.Transaction[i].totalCharge + " ";
+								rate += a[ind].Account.Transactions.Transaction[i].rate + " ";
+
+							}
+
+						}
+
+						//console.log("sum "+a[0].Account.type);
+
+
+
+						// appends <table> into <body>
+
+						// console.log(str);
+						// console.log(amt);
+						// console.log(bal);
+						// console.log(date);
+
+
+
+						document.getElementById("name1").innerHTML = name;
+						document.getElementById("acc").innerHTML = a[ind].maskedAccNumber;
+						document.getElementById("type").innerHTML = "DIVIDEND TYPE:" + a[ind].Account.Summary.Investment.Holdings.Holding.dividendType;
+						document.getElementById("bal").innerHTML = "AMC:" + a[ind].Account.Summary.Investment.Holdings.Holding.amc;
+
+
+						var customers = new Array();
+						customers.push(["ORDER DATE", "CLOSING UNITS", "AMOUNT", "SCHEME PLAN"]);
+
+
+						//Create a HTML Table element.
+						var table = document.createElement("TABLE");
+						table.border = "1";
+
+						//Get the count of columns.
+						var columnCount = 4;
+
+
+						//Add the header row.
+						var row = table.insertRow(-1);
+						for (var i = 0; i < columnCount; i++) {
+							var headerCell = document.createElement("TH");
+							headerCell.innerHTML = customers[0][i];
+							row.appendChild(headerCell);
+						}
+						for (i in a[ind].Account.Transactions.Transaction) {
+							const row = document.createElement("tr");
+							customers.push(a[ind].Account.Transactions.Transaction[i].orderDate + "," + a[ind].Account.Transactions.Transaction[i].closingUnits + "," + a[ind].Account.Transactions.Transaction[i].amount + "," + a[ind].Account.Transactions.Transaction[i].schemePlan);
+
+
+						}
+
+						for (var i = 1; i < 10; i++) {
+							row = table.insertRow(-1);
+							for (var j = 0; j < columnCount; j++) {
+								var cell = row.insertCell(-1);
+								var c = customers[i].split(",");
+								console.log(c[0]);
+								cell.innerHTML = c[j];
+							}
+						}
+
+
+						var dvTable = document.getElementById("dvTable");
+						dvTable.innerHTML = "";
+						dvTable.appendChild(table);
+
+					}
+					if (ty === "\"insurance\"" && t === "\"insurance\"") {
+						ind = i;
+						var cmp, rate;
+						//console.log(ind);
+						try {
+							for (i in a[ind].Transactions.Transaction) {
+								const row = document.createElement("tr");
+								str += a[ind].Transactions.Transaction[i].tradeValue + " ";
+								amt += a[ind].Transactions.Transaction[i].companyName + " ";
+								bal += a[ind].Transactions.Transaction[i].symbol + " ";
+								date += a[ind].Transactions.Transaction[i].units + " ";
+								cmp += a[ind].Transactions.Transaction[i].totalCharge + " ";
+								rate += a[ind].Transactions.Transaction[i].rate + " ";
+
+							}
+						} catch (e) {
+							for (i in a[ind].Account.Transactions.Transaction) {
+								const row = document.createElement("tr");
+								str += a[ind].Account.Transactions.Transaction[i].tradeValue + " ";
+								amt += a[ind].Account.Transactions.Transaction[i].companyName + " ";
+								bal += a[ind].Account.Transactions.Transaction[i].symbol + " ";
+								date += a[ind].Account.Transactions.Transaction[i].units + " ";
+								cmp += a[ind].Account.Transactions.Transaction[i].totalCharge + " ";
+								rate += a[ind].Account.Transactions.Transaction[i].rate + " ";
+
+							}
+
+						}
+
+						//console.log("sum "+a[0].Account.type);
+
+
+
+						// appends <table> into <body>
+
+						// console.log(str);
+						// console.log(amt);
+						// console.log(bal);
+						// console.log(date);
+
+
+
+						document.getElementById("name1").innerHTML = name;
+						document.getElementById("acc").innerHTML = a[ind].maskedAccNumber;
+						document.getElementById("type").innerHTML = "AMOUNT:" + a[ind].Account.Summary.MoneyBacks.MoneyBack.amount;
+						document.getElementById("bal").innerHTML = "MATURITY DATE:" + a[ind].Account.Summary.maturityDate;
+						document.getElementById("1").innerHTML = "PREMIUM FREQUENCY:" + a[ind].Account.Summary.premiumFrequency;
+						document.getElementById("2").innerHTML = "SUM ASSURED:" + a[ind].Account.Summary.sumAssured;
+
+						var customers = new Array();
+						customers.push(["DATE", "TYPE", "AMOUNT"]);
+
+
+						//Create a HTML Table element.
+						var table = document.createElement("TABLE");
+						table.border = "1";
+
+						//Get the count of columns.
+						var columnCount = 3;
+
+
+						//Add the header row.
+						var row = table.insertRow(-1);
+						for (var i = 0; i < columnCount; i++) {
+							var headerCell = document.createElement("TH");
+							headerCell.innerHTML = customers[0][i];
+							row.appendChild(headerCell);
+						}
+						for (i in a[ind].Account.Transactions.Transaction) {
+							const row = document.createElement("tr");
+							customers.push(a[ind].Account.Transactions.Transaction[i].txnDate + "," + a[ind].Account.Transactions.Transaction[i].type + "," + a[ind].Account.Transactions.Transaction[i].amount);
+
+
+						}
+
+						for (var i = 1; i < a[ind].Account.Transactions.Transaction.length; i++) {
+							row = table.insertRow(-1);
+							for (var j = 0; j < columnCount; j++) {
+								var cell = row.insertCell(-1);
+								var c = customers[i].split(",");
+								console.log(c[0]);
+								cell.innerHTML = c[j];
+							}
+						}
+
+
+						var dvTable = document.getElementById("dvTable");
+						dvTable.innerHTML = "";
+						dvTable.appendChild(table);
+
+					}
+					if (ty === "\"term_deposit\"" && t === "\"term_deposit\"") {
+						ind = i;
+						var cmp, rate;
+						//console.log(ind);
+						try {
+							for (i in a[ind].Transactions.Transaction) {
+								const row = document.createElement("tr");
+								str += a[ind].Transactions.Transaction[i].tradeValue + " ";
+								amt += a[ind].Transactions.Transaction[i].companyName + " ";
+								bal += a[ind].Transactions.Transaction[i].symbol + " ";
+								date += a[ind].Transactions.Transaction[i].units + " ";
+								cmp += a[ind].Transactions.Transaction[i].totalCharge + " ";
+								rate += a[ind].Transactions.Transaction[i].rate + " ";
+
+							}
+						} catch (e) {
+							for (i in a[ind].Account.Transactions.Transaction) {
+								const row = document.createElement("tr");
+								str += a[ind].Account.Transactions.Transaction[i].tradeValue + " ";
+								amt += a[ind].Account.Transactions.Transaction[i].companyName + " ";
+								bal += a[ind].Account.Transactions.Transaction[i].symbol + " ";
+								date += a[ind].Account.Transactions.Transaction[i].units + " ";
+								cmp += a[ind].Account.Transactions.Transaction[i].totalCharge + " ";
+								rate += a[ind].Account.Transactions.Transaction[i].rate + " ";
+
+							}
+
+						}
+
+						//console.log("sum "+a[0].Account.type);
+
+
+
+						// appends <table> into <body>
+
+						// console.log(str);
+						// console.log(amt);
+						// console.log(bal);
+						// console.log(date);
+
+
+
+						document.getElementById("name1").innerHTML = name;
+						document.getElementById("acc").innerHTML = a[ind].maskedAccNumber;
+						document.getElementById("type").innerHTML = "CURRENT VALUE:" + a[ind].Summary.currentValue;
+						document.getElementById("bal").innerHTML = "MATURITY DATE:" + a[ind].Summary.maturityDate;
+						document.getElementById("1").innerHTML = "PRINCIPAL AMOUNT:" + a[ind].Summary.principalAmount;
+						document.getElementById("2").innerHTML = "TYPE:" + a[ind].Summary.accountType;
+
+						var customers = new Array();
+						customers.push(["VALUE DATE", "TYPE", "AMOUNT", "BALANCE"]);
+
+
+						//Create a HTML Table element.
+						var table = document.createElement("TABLE");
+						table.border = "1";
+
+						//Get the count of columns.
+						var columnCount = 4;
+
+
+						//Add the header row.
+						var row = table.insertRow(-1);
+						for (var i = 0; i < columnCount; i++) {
+							var headerCell = document.createElement("TH");
+							headerCell.innerHTML = customers[0][i];
+							row.appendChild(headerCell);
+						}
+						for (i in a[ind].Transactions.Transaction) {
+							const row = document.createElement("tr");
+							customers.push(a[ind].Transactions.Transaction[i].valueDate + "," + a[ind].Transactions.Transaction[i].type + "," + a[ind].Transactions.Transaction[i].amount + "," + a[ind].Transactions.Transaction[i].balance);
+
+
+						}
+
+						for (var i = 0; i < a[ind].Transactions.Transaction.length; i++) {
+							// console.log(2);
+							row = table.insertRow(-1);
+							for (var j = 0; j < columnCount; j++) {
+								var cell = row.insertCell(-1);
+								var c = customers[i].split(",");
+								console.log(c[0]);
+								cell.innerHTML = c[j];
+							}
+						}
+
+
+						var dvTable = document.getElementById("dvTable");
+						dvTable.innerHTML = "";
+						dvTable.appendChild(table);
+
+					}
+					if (ty === "\"recurring_deposit\"" && t === "\"recurring_deposit\"") {
+						ind = i;
+						var cmp, rate;
+						//console.log(ind);
+						try {
+							for (i in a[ind].Transactions.Transaction) {
+								const row = document.createElement("tr");
+								str += a[ind].Transactions.Transaction[i].tradeValue + " ";
+								amt += a[ind].Transactions.Transaction[i].companyName + " ";
+								bal += a[ind].Transactions.Transaction[i].symbol + " ";
+								date += a[ind].Transactions.Transaction[i].units + " ";
+								cmp += a[ind].Transactions.Transaction[i].totalCharge + " ";
+								rate += a[ind].Transactions.Transaction[i].rate + " ";
+
+							}
+						} catch (e) {
+							for (i in a[ind].Account.Transactions.Transaction) {
+								const row = document.createElement("tr");
+								str += a[ind].Account.Transactions.Transaction[i].tradeValue + " ";
+								amt += a[ind].Account.Transactions.Transaction[i].companyName + " ";
+								bal += a[ind].Account.Transactions.Transaction[i].symbol + " ";
+								date += a[ind].Account.Transactions.Transaction[i].units + " ";
+								cmp += a[ind].Account.Transactions.Transaction[i].totalCharge + " ";
+								rate += a[ind].Account.Transactions.Transaction[i].rate + " ";
+
+							}
+
+						}
+
+						//console.log("sum "+a[0].Account.type);
+
+
+
+						// appends <table> into <body>
+
+						// console.log(str);
+						// console.log(amt);
+						// console.log(bal);
+						// console.log(date);
+
+
+
+						document.getElementById("name1").innerHTML = name;
+						document.getElementById("acc").innerHTML = a[ind].maskedAccNumber;
+						document.getElementById("type").innerHTML = "CURRENT VALUE:" + a[ind].Summary.currentValue;
+						document.getElementById("bal").innerHTML = "MATURITY DATE:" + a[ind].Summary.maturityDate;
+						document.getElementById("1").innerHTML = "PRINCIPAL AMOUNT:" + a[ind].Summary.principalAmount;
+						document.getElementById("2").innerHTML = "TYPE:" + a[ind].Summary.accountType;
+
+						var customers = new Array();
+						customers.push(["VALUE DATE", "TYPE", "AMOUNT", "BALANCE"]);
+
+
+						//Create a HTML Table element.
+						var table = document.createElement("TABLE");
+						table.border = "1";
+
+						//Get the count of columns.
+						var columnCount = 4;
+
+
+						//Add the header row.
+						var row = table.insertRow(-1);
+						for (var i = 0; i < columnCount; i++) {
+							var headerCell = document.createElement("TH");
+							headerCell.innerHTML = customers[0][i];
+							row.appendChild(headerCell);
+						}
+						for (i in a[ind].Transactions.Transaction) {
+							const row = document.createElement("tr");
+							customers.push(a[ind].Transactions.Transaction[i].valueDate + "," + a[ind].Transactions.Transaction[i].type + "," + a[ind].Transactions.Transaction[i].amount + "," + a[ind].Transactions.Transaction[i].balance);
+
+
+						}
+
+						for (var i = 1; i <= a[ind].Transactions.Transaction.length; i++) {
+							row = table.insertRow(-1);
+							console.log(customers);
+							for (var j = 0; j < columnCount; j++) {
+								var cell = row.insertCell(-1);
+								var c = customers[i].split(",");
+								console.log(c[0]);
+								cell.innerHTML = c[j];
+							}
+						}
+
+
+						var dvTable = document.getElementById("dvTable");
+						dvTable.innerHTML = "";
+						dvTable.appendChild(table);
+
+					}
+
+					if (ty === "\"nps\"" && t === "\"nps\"") {
+						ind = i;
+						var cmp, rate;
+						//console.log(ind);
+						
+
+						//console.log("sum "+a[0].Account.type);
+
+
+
+						// appends <table> into <body>
+
+						// console.log(str);
+						// console.log(amt);
+						// console.log(bal);
+						// console.log(date);
+
+
+
+						document.getElementById("name1").innerHTML = name;
+						document.getElementById("acc").innerHTML = a[ind].maskedAccNumber;
+						document.getElementById("type").innerHTML = "CURRENT VALUE:" + a[ind].Summary.currentValue;
+						document.getElementById("bal").innerHTML = "STATUS:" + a[ind].Summary.status;
+						document.getElementById("1").innerHTML = "TIER1 STATUS:" + a[ind].Summary.tier1Status;
+						document.getElementById("2").innerHTML = "TIER2 STATUS:" + a[ind].Summary.tier2Status;
+					}
+				}
+
+
+			}
+		}
+
+
+
+
+
+
+
+	</script>
+</head>
+
+<body class="is-preload">
+
+	<!-- Header -->
+	<header id="header">
+		<a href="index.html" class="title">CashFlow</a>
+		<nav>
+			<ul>
+				<li><a href="index.html">Log Out</a></li>
+				<li><a href="#">350 points</a></li>
+				<li><a href="#" class="active" id="name"></a></li>
+			</ul>
+		</nav>
+	</header>
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Main -->
+		<section id="main" class="wrapper">
+			<div class="inner">
+				<h1 class="major"><img src="images/2.png" alt="" height=200 /><br>
+					Keep your CashFlow
+					crystal clear</h1>
+				<!--<span class="image fit"><img src="images/pic04.jpg" alt="" /></span>-->
+				<p>Effortlessly track your cashflow, transaction and gain insights
+					that’ll help you see easy opportunities to save
+				</p>
+				<p>Here's your transaction history assosciated with your account!</p>
+				<!-- Table -->
+				<section>
+					<h2><img src="images/bob.png" alt="" height=50 /> <br>Bank of Baroda</h2>
+					<h4>
+						<p style="float:left">ACCOUNT HOLDER:
+						<div style="float:left;" id="name1"></div>
+						</p><br>
+					</h4>
+					<br>
+					<p style="float:left"> ACCOUNT NUMBER:
+					<div style="float:left" id="acc"></div>
+					</p>
+					<br>
+					<p style="float:left">
+					<div id="type"></div>
+					</p>
+
+					<p style="float:left">
+					<div style="float:left" id="bal"></div>
+					</p>
+					<br>
+					<p style="float:left">
+					<div style="float:left" id="1"></div>
+					</p>
+					<br>
+					<p style="float:left">
+					<div style="float:left" id="2"></div>
+					</p>
+				</section>
+			</div>
+
+			<body>
+
+				<div id="dvTable"></div>
+
+	</div>
+	</section>
+
+
+	</div>
+
+	<!-- Footer -->
+	<footer id="footer" class="wrapper alt">
+		<div class="inner">
+			<ul class="menu">
+				<li>&copy; Untitled. All rights reserved.</li>
+				<li>Design: CashFlow</li>
+			</ul>
+		</div>
+	</footer>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.scrollex.min.js"></script>
+	<script src="assets/js/jquery.scrolly.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+
+</body>
+
+</html>

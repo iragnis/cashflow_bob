@@ -1,0 +1,307 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+	<title>Linked accounts</title>
+	<link rel="icon" href="images/logo2.png" type="image/png">
+	<style>
+		img {
+			border-radius: 50%;
+		}
+	</style>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript>
+		<link rel="stylesheet" href="assets/css/noscript.css" />
+	</noscript>
+	<script>
+		const trackid = localStorage.getItem("trackid");
+		const reference = localStorage.getItem("reference");
+		const sessionid = localStorage.getItem("seshid");
+		console.log(trackid + "" + reference + "" + sessionid);
+
+		//Build an array containing Customer records.
+		var myHeaders = new Headers();
+		myHeaders.append("Content-Type", "application/json");
+		myHeaders.append("API_KEY", "3568b51194b53480dcfb78c350");
+
+		var raw = "";
+
+		var requestOptions = {
+			method: 'GET',
+			headers: myHeaders,
+
+			redirect: 'follow'
+		};
+		var apiurl1 = "https://hackathon.pirimidtech.com/hackathon/consent/data/fetch?trackingId=" + trackid.toString() + "&referenceId=" + reference.toString() + "&sessionId=" + sessionid.toString();
+		fetch(apiurl1, requestOptions)
+			.then(response => response.json())
+			.then(result => printIt(result))
+			.catch(error => console.log('error', error));
+		let printIt = (data) => {
+
+
+
+			const a = data;
+			console.log(a);
+			console.log(a.length);
+			var accn, type1;
+
+			//   for (var i=0;i<a.length;i++) {
+			// 	accn=a[i].maskedAccNumber;
+			// 	type1=a[i].Account.type;
+			//   }
+			var str = "", amt = "", bal = "", date = "";
+			//console.log(accn+ " "+ type1);
+			//   console.log("type "+a[0].Profile.Holders.type);
+			//   console.log("type "+a[0].type);
+			//   console.log("acc no "+a[0].maskedAccNumber);
+			//   console.log("acc name "+a[0].Profile.Holders.Holder[0].name);
+			//   console.log("sum "+a[0].Summary.currentBalance);
+			//   console.log("ifsccode "+a[0].Summary.ifscCode);
+			// console.log("sum "+a[0].Transactions.Transaction[0].type);
+
+			//   for (i in a[0].Transactions.Transaction) {
+			// 			const row = document.createElement("tr");
+			// 			str += a[0].Transactions.Transaction[i].type + " ";
+			// 			amt += a[0].Transactions.Transaction[i].amount + " ";
+			// 			bal += a[0].Transactions.Transaction[i].currentBalance+ " ";
+			// 			date += a[0].Transactions.Transaction[i].valueDate+ " ";
+
+
+			// 		}
+
+			// appends <table> into <body>
+
+			// console.log(str);
+			// console.log(amt);
+			// console.log(bal);
+			// console.log(date);
+
+			// document.getElementById("1").innerHTML=a[0].Summary.ifscCode;
+			// document.getElementById("2").innerHTML=a[0].maskedAccNumber;
+
+			// document.getElementById("3").innerHTML=a[0].Summary.currentBalance;
+			// document.getElementById("name").innerHTML = a[0].Profile.Holders.Holder[0].name;
+
+			var customers = new Array();
+			customers.push(["ACCOUNT NUMBER", "TYPE"]);
+
+
+			//Create a HTML Table element.
+			var table = document.createElement("TABLE");
+			table.border = "1";
+
+			//Get the count of columns.
+			var columnCount = 2;
+
+
+			//Add the header row.
+			var row = table.insertRow(-1);
+			for (var i = 0; i < columnCount; i++) {
+				var headerCell = document.createElement("TH");
+				headerCell.innerHTML = customers[0][i];
+				row.appendChild(headerCell);
+			}
+			for (var i = 0; i < a.length; i++) {
+				var ty;
+				const row = document.createElement("tr");
+				try {
+
+					// customers.push(a[i].maskedAccNumber + "," + a[i].Account.type);
+					customers.push(a[i].maskedAccNumber);
+					customers.push(a[i].Account.type);
+				} catch (e) {
+					// customers.push(a[i].maskedAccNumber + "," + a[i].type);
+					
+					customers.push(a[i].type);
+				}
+
+
+
+			}
+
+			//console.log(a);
+			console.log(customers);
+			
+            var k=1;
+			for (var i = 1; i <= a.length; i++) {
+				row = table.insertRow(-1);
+				//k=1;
+				for (var j = 0; j < columnCount; j++) {
+					var cell = row.insertCell(-1);
+					//console.log(customers);
+					var c = customers[k];
+					//console.log(c);
+                    
+					if(k%2==0){
+						console.log(c);
+					//var pa = "file:///C:/Users/Pooja/Documents/GitHub/CashFlow/Transaction.html";
+                    var pa="https://gaurpeeyush.github.io/CashFlow/Transaction.html";
+					cell.innerHTML += "<a href='" + pa + "'>" + c+ "</a>";
+                    
+
+					}
+					else{cell.innerHTML = c;
+					}
+					k++;
+					//row.setAttribute('onclick', tab());
+				}
+
+			}
+
+			var dvTable = document.getElementById("dvTable");
+			// document.querySelector("#dvTable").addEventListener('click',(args)=>{
+			// 	if (args.target.classList.contains('e-rowcell')) {
+			// 				debugger;
+			// 				let rowInfo = this.getRowInfo(args.target); // get row information
+			//                 console.log("in");
+			// 				alert(rowInfo.rowData[rowInfo.column['field']]);
+			// 			}
+			// });
+			document.querySelector('#dvTable').addEventListener('click', (ev) => {
+				
+				console.log(ev.target);
+				var v=(ev.target);
+				//v.slice(4,);
+				const v1=JSON.stringify(v.innerHTML);
+				console.log((v1));
+				localStorage.setItem("ty",v1);
+				let redirect_Page = () => {
+					let tID = setTimeout(function () {
+						//window.location.href = "C:\Users\Pooja\Documents\GitHub\CashFlow\Transaction.html";
+						window.location.href="https://gaurpeeyush.github.io/CashFlow/Transaction.html";
+						window.clearTimeout(tID);		// clear time out.
+					}, 6000);
+				}
+				// console.log(typeof(JSON.stringify(v)));
+			})
+
+
+			dvTable.innerHTML = "";
+			dvTable.appendChild(table);
+
+
+
+
+		}
+
+	</script>
+</head>
+
+<body class="is-preload">
+
+	<!-- Header -->
+	<header id="header">
+		<a href="index.html" class="title">CashFlow</a>
+		<nav>
+			<ul>
+				<li><a href="index.html">Log Out</a></li>
+				<li><a href="#">350 points</a></li>
+				<li><a href="#" class="active" id="name"></a></li>
+			</ul>
+		</nav>
+	</header>
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Main -->
+		<section id="main" class="wrapper">
+			<div class="inner">
+				<h1 class="major"><img src="images/1.png" alt="" height=200 /><br>
+					All your accounts,<br>
+					All in one place</h1>
+				<!--<span class="image fit"><img src="images/pic04.jpg" alt="" /></span>-->
+				<p>See it all at a glance when you link your cash
+					accounts, savings account, current account, and
+					joint account<br>
+					Effortlessly track your CashFlow and gain insights that'll help you see easy opportunities to save
+				</p>
+				<p>Here's a list of all the accounts linked to your mobile number!</p>
+				<!-- Table -->
+				<section>
+					<h2>Linked accounts</h2>
+					<!--<h3>Default</h3>-->
+					<div class="table-wrapper">
+						<div id="dvTable"></div>
+
+						<!-- <table>
+										<thead>
+											<!-- <tr>
+												<th>IFSC Code</th>
+												<th>Account number</th>
+												<th>Current Balance</th>
+											</tr> -->
+						</thead>
+						<tbody>
+							<!-- <tr >
+												<td id="1"></td>
+												<td id="2"></td>
+												<td id="3"></td>
+											</tr> -->
+							<!-- <tr id="2">
+												<td>Axis Bank</td>
+												<td>* ** 7895</td>
+												<td>₹19.99</td>
+											</tr>
+											<tr id="3">
+												<td>State Bank of India</td>
+												<td>* ** 1245</td>
+												<td>₹29.99</td>
+											</tr>
+											<tr id="4">
+												<td>HDFC</td>
+												<td>* ** 2459</td>
+												<td>₹19.99</td>
+											</tr>
+											<tr id="5">
+												<td>Federal Bank</td>
+												<td>* ** 1247</td>
+												<td>₹29.99</td>
+											</tr> -->
+						</tbody>
+						<!-- <tfoot>
+											<tr>
+												<td colspan="2"></td>
+												<td>100.00</td>
+											</tr>
+										</tfoot> -->
+						</table>
+					</div>
+			</div>
+		</section>
+
+
+	</div>
+
+	<!-- Footer -->
+	<footer id="footer" class="wrapper alt">
+		<div class="inner">
+			<ul class="menu">
+				<li>&copy; Untitled. All rights reserved.</li>
+				<li>Design: CashFlow</li>
+			</ul>
+		</div>
+	</footer>
+
+	<!-- Scripts -->
+
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.scrollex.min.js"></script>
+	<script src="assets/js/jquery.scrolly.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,427 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Home</title>
+		<link rel="icon" href="images/logo2.png" type="image/png">
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<script>
+		
+
+// var trackid = 1234;
+// var reference = "7766df3f-9393-4be8-8c12-51cdcf3c2619";
+// var sessionid = "8966a18a-c009-4a0f-9399-0fbf1502d6d1";
+const t=localStorage.getItem("trackid");
+const r=localStorage.getItem("reference");
+console.log(t +""+r);
+sesh(t,r);
+// dataf(t, r, sessionid);
+function sesh(t, r) {
+	var tra = t;
+	var refid = r;
+	console.log("track" + tra);
+	console.log("ref" + r);
+	var myHeaders = new Headers();
+	myHeaders.append("Content-Type", "application/json");
+	myHeaders.append("API_KEY", "3568b51194b53480dcfb78c350");
+
+	var raw = "";
+
+	var requestOptions = {
+		method: 'GET',
+		headers: myHeaders,
+		// body: raw,
+		redirect: 'follow'
+	};
+	
+	var apiurl = "https://hackathon.pirimidtech.com/hackathon/consent/status?trackingId=" + tra.toString() + "&referenceId=" + refid.toString();
+	console.log(apiurl);
+	fetch(apiurl, requestOptions)
+		.then(response => response.json())
+		.then(result => printIt(result))
+		.catch(error => console.log('error', error));
+	let printIt = (data) => {
+
+		const a = data;
+		var seshid=a.dataDetails[0].sessionId;
+		console.log("sesh"+seshid);
+		localStorage.setItem("trackid", tra);
+		 localStorage.setItem("reference", refid);
+		localStorage.setItem("seshid", seshid);
+		let redirect_Page = () => {
+			let tID = setTimeout(function () {
+				// window.location.href = "C:\Users\Pooja\Documents\GitHub\CashFlow\Transaction.html";
+				window.location.href="https://gaurpeeyush.github.io/CashFlow/Transaction.html";
+				window.clearTimeout(tID);		// clear time out.
+			}, 2000);
+		}
+		
+	dataf(t, r, seshid);
+
+	}
+}
+
+
+function dataf(trackid, reference, sessionid) {
+
+	var apiurl1 = "https://hackathon.pirimidtech.com/hackathon/consent/data/fetch?trackingId=" + trackid.toString() + "&referenceId=" + reference.toString() + "&sessionId=" + sessionid.toString();
+	//Build an array containing Customer records.
+	var myHeaders = new Headers();
+	myHeaders.append("Content-Type", "application/json");
+	myHeaders.append("API_KEY", "3568b51194b53480dcfb78c350");
+
+	var raw = "";
+
+	var requestOptions = {
+		method: 'GET',
+		headers: myHeaders,
+
+		redirect: 'follow'
+	};
+
+	fetch(apiurl1, requestOptions)
+		.then(response => response.json())
+		.then(result => printIt(result))
+		.catch(error => console.log('error', error));
+	let printIt = (data) => {
+
+
+
+		const a = data;
+		console.log(a);
+		var str = "", amt = "", bal = "", date = "";
+		// console.log("type " + a[0].Profile.Holders.type);
+		// console.log("type " + a[0].type);
+		// console.log("acc no " + a[0].maskedAccNumber);
+		// console.log("acc name " + a[0].Profile.Holders.Holder[0].name);
+		// console.log("sum " + a[0].Summary.currentBalance);
+		// console.log("ifsccode " + a[0].Summary.ifscCode);
+		// console.log("sum "+a[0].Transactions.Transaction[0].type);
+
+		// for (i in a[0].Transactions.Transaction) {
+		// 	const row = document.createElement("tr");
+		// 	str += a[0].Transactions.Transaction[i].type + " ";
+		// 	amt += a[0].Transactions.Transaction[i].amount + " ";
+		// 	bal += a[0].Transactions.Transaction[i].currentBalance + " ";
+		// 	date += a[0].Transactions.Transaction[i].valueDate + " ";
+
+
+		// }
+
+		// appends <table> into <body>
+
+		// console.log(str);
+		// console.log(amt);
+		// console.log(bal);
+		// console.log(date);
+		
+		try{  
+         var name=a[0].Profile.Holders.Holder[0].name;
+           
+           }catch(e){  
+			try{
+				name=a[0].Account.Profile.Holders.Holder.name;
+			}catch(e)
+			{
+                 name=a[0].Profile.Holders.Holder.name;
+			}
+			
+			
+			
+          }
+		  
+		  console.log(name);
+        // console.log(a[0].Profile.Holders.Holder[0].name);
+		// console.log(a[0].Account.Profile.Holders.Holder.name);
+		// document.getElementById("name").innerHTML = a[0].Profile.Holders.Holder[0].name;
+		document.getElementById("name").innerHTML = name;
+		// document.getElementById("name").innerHTML = a[0].Profile.Holders.Holder[0].name;
+		// document.getElementById("acc").innerHTML = a[0].maskedAccNumber;
+		// document.getElementById("type").innerHTML = a[0].Profile.Holders.type;
+		// document.getElementById("bal").innerHTML = a[0].Summary.currentBalance;
+
+
+		
+		//Add the header row.
+		
+
+
+		}
+
+
+
+
+
+		
+
+		// var dvTable = document.getElementById("dvTable");
+		// dvTable.innerHTML = "";
+		// dvTable.appendChild(table);
+	}
+
+
+
+</script>
+
+	<body class="is-preload">
+
+		<!-- Sidebar -->
+			<section id="sidebar">
+				<div class="inner">
+					<nav>
+						<ul>
+							<li><a href="#intro">Welcome</a></li>
+							<!--<li><a href="#one">Who we are</a></li>-->
+							<li><a href="#two">Services</a></li>
+							<li><a href="#three">Equity Investments</a></li>
+							<li><a href="#four">Customer Support</a></li>
+						</ul>
+					</nav>
+				</div>
+			</section>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Intro -->
+					<section id="intro" class="wrapper style1 fullscreen fade-up">
+						<div class="inner">
+							<h1>
+								<span class="symbol"><img src="images/logo2.png" alt="" height = 100/></span>
+							<br>Welcome Onboard!<br>
+							<h3><p id="name"></p></h3>
+						    </h1>
+							<p> Managing finances has never been easier. End-to-end data transfer and financial management in a single solution. 
+								<h3>Meet the right platform to help realise</h3>
+								
+
+								</p>
+							<ul class="actions">
+								<li><a href="#two" class="button scrolly">get started</a></li>
+							</ul>
+						</div>
+					</section>
+
+				<!-- One 
+					<section id="one" class="wrapper style2 spotlights">
+						<section>
+							<a href="#" class="image"><img src="images/1.png" alt="" data-position="center center" /></a>
+							<div class="content">
+								<div class="inner">
+									<h2>No need for multiple apps</h2>
+									<p>Easily connect all your accounts. From cash and credit to loans and investments, you can see your complete financial picture in CashFlow</p>
+									<ul class="actions">
+										<li><a href="generic.html" class="button">Learn more</a></li>
+									</ul>
+								</div>
+							</div>
+						</section>
+						<section>
+							<a href="#" class="image"><img src="images/2.png" alt="" data-position="top center" /></a>
+							<div class="content">
+								<div class="inner">
+									<h2>Track your cash flow with ease</h2>
+									<p>Effortlessly track your cashflow and gain insights
+										that’ll help you see easy opportunities to save</p>
+									<ul class="actions">
+										<li><a href="generic.html" class="button">Learn more</a></li>
+									</ul>
+								</div>
+							</div>
+						</section>
+						<section>
+							<a href="#" class="image"><img src="images/3.png" alt="" data-position="25% 25%" /></a>
+							<div class="content">
+								<div class="inner">
+									<h2>Spend smarter with custom goals</h2>
+									<p>Set a purchase goal, track your
+										savings progress in a hassle free manner and earn reward points
+										</p>
+									<ul class="actions">
+										<li><a href="generic.html" class="button">Learn more</a></li>
+									</ul>
+								</div>
+							</div>
+						</section>
+						<section>
+							<a href="#" class="image"><img src="images/4.png" alt="" data-position="25% 25%" /></a>
+							<div class="content">
+								<div class="inner">
+									<h2>Data Sharing</h2>
+									<p>CashFlow uses Account Aggregator ecosystem for
+										sharing data of customers securely through the use
+										of APIs
+										</p>
+									<ul class="actions">
+										<li><a href="generic.html" class="button">Learn more</a></li>
+									</ul>
+								</div>
+							</div>
+						</section>
+					</section> -->
+
+				<!-- Two -->
+					<section id="two" class="wrapper style3 fade-up">
+						<div class="inner">
+							<h2>Services we offer</h2>
+							<p>Personal
+								Finance Management
+								platform that brings
+								together all of your finances.
+							We make money managing easy for you!
+								</p>
+							<div class="features">
+								<section>
+									<a href="accounts.html"><span class="icon major fa-save"></span></a>
+									<a href="accounts.html"><h3>Keep your CashFlow
+										crystal clear</h3></a>
+									<a href="accounts.html"><p>Effortlessly track your cashflow and gain insights
+										that’ll help you see easy opportunities to save
+										</p></a>
+								</section>
+								<section>
+									<a href="Share.html"><span class="icon solid major fa-lock"></span></a>
+									<a href="Share.html"><h3>Share your  financial data securely</h3></a>
+									<a href="Share.html"><p>CashFlow allows you to share your financial data
+										securely and selectively with other financial
+										entities and earn reward points in return
+										</p></a>
+								</section>
+								<section>
+									<a href="Goals.html"><span class="icon major fa-gem"></span></a>
+									<a href="Goals.html"><h3>Set a custom Goal</h3></a>
+									<a href="Goals.html"><p>Set a goal to purchase anything
+										within a due period of time. Track your
+										savings progress in a hassle free manner and earn reward points
+									</p></a>
+								</section>
+								<section>
+									<a href="accounts.html"><span class="icon solid major fa-desktop"></span></a>
+									<a href="accounts.html"><h3>All your accounts,
+										All in one place</h3></a>
+									<a href="accounts.html"><p>See it all at a glance when you link your cash
+										accounts, savings account, current account, and
+										joint account</p></a>
+								</section>
+								<section>
+									<a href="Credit.html"><span class="icon solid major fa-link"></span></a>
+									<a href="Credit.html"><h3>Check your
+										credit score</h3></a>
+									<a href="Credit.html"><p>CashFlow allows third party applications to
+										promote their services of checking Credit
+										Score of the users for free</p></a>
+								</section>
+								<section>
+									<a href="#four" class="scrolly"><span class="icon solid major fa-phone"></span></a>
+									<a href="#four" class="scrolly"><h3>Customer support</h3></a>
+									<a href="#four" class="scrolly"><p>Everything you need to know about CashFlow. Can't fine the answer you're looking for? Send us a message!</p></a>
+								</section>
+					
+							</div>
+							<!--<ul class="actions">
+								<li><a href="generic.html" class="button">Sign up</a></li>
+							</ul>-->
+						</div>
+					</section>
+
+				<!-- Three -->
+				<section id ="three" class="wrapper style4 fade-up">
+					<div class="inner">
+						<h2>Equity Investments</h2>
+						<p>Be prepared for the future, take the right step to make your dreams possible!</p>
+						<p>Stock investments are one of the best ways to generate wealth. Be a strategic investor and take data-driven decisions with CashFlow that can help you achieve the long-term financial goals effectively using stocks.<br>Limited liability, high liquidity, capital gains, control over your finance and what not!</p><p>What are you waiting for? Open your Online Demat Account right now!</p>
+						<ul class="actions">
+							<li><a href="equity.html" class="button">Explore</a></li>
+						</ul>
+				</section>
+
+				<!--Four-->
+				<section id="four" class="wrapper style1 fade-up">
+					<div class="inner">
+						<h2>You've got questions?,<br>
+						We've got answers!</h2>
+						<p>For all enquiries, please email us using the form below</p>
+						<div class="split style1">
+							<section>
+								<form action="https://formspree.io/f/xlekerna" method="POST" />
+									<div class="fields">
+										<div class="field half">
+											<label for="name">Name</label>
+											<input type="text" name="name" id="name" />
+										</div>
+										<div class="field half">
+											<label for="email">Email</label>
+											<input type="email" name="email" id="email" />
+										</div>
+										<div class="field">
+											<label for="message">Message</label>
+											<textarea name="message" id="message" rows="5"></textarea>
+										</div>
+									</div>
+									<ul class="actions">
+										<li><a href="" class="button submit">Send Message</a></li>
+									</ul>
+								</form>
+							</section>
+							<section>
+								<ul class="contact">
+									<li>
+										<h3>Address</h3>
+										<span>1st. Stage, KS Layout<br />
+										Bangalore, 560078<br />
+										India</span>
+									</li>
+									<li>
+										<h3>Email</h3>
+										<a href="mailto:17piyushgaur@gmail.com">support@cashflow.com</a>
+									</li>
+									<li>
+										<h3>Phone</h3>
+										<span>(000) 9786-784</span>
+									</li>
+										<li>
+											<h3>Social</h3>
+											<ul class="icons">
+												<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+												<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+												<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+												<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+												<li><a href="#" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+											</ul>
+										</li>
+									</ul>
+								</section>
+							</div>
+						</div>
+					</section>
+
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper style1-alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="index.html">CashFlow</a></li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
